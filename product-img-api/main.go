@@ -42,14 +42,15 @@ func main() {
 	fh := handlers.NewFiles(stor, l)
 
 	ph := sm.Methods(http.MethodPost).Subrouter()
-	ph.HandleFunc("/images/{id:[0-9]+}/{filename}", fh.ServeHTTP)
+	ph.HandleFunc("/images/{id:[0-9]+}/{filename}", fh.UploadRest)
+	ph.HandleFunc("/images", fh.UploadMultiPart)
 
 	gh := sm.Methods(http.MethodGet).Subrouter()
 	gh.Handle("/images/{id:[0-9]+}/{filename}", http.StripPrefix("/images", http.FileServer(http.Dir(basePath))))
 
 	// CORS
 	// We can add multiple referrers which can call this. Just adding one for the time being
-	ch := gohandler.CORS(gohandler.AllowedOrigins([]string{"http://localhost:8000"}))
+	ch := gohandler.CORS(gohandler.AllowedOrigins([]string{"http://localhost:8000", "http://localhost:3000"}))
 
 	// To allow everyone to access : 
 	// ch := gohandler.CORS(gohandler.AllowedOrigins([]string{"*"}))
