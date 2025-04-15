@@ -69,20 +69,20 @@ func (l *Local) Save(path string, contents io.Reader) error {
 	return nil
 }
 
-// Get the file at the given path and return a Reader
-// the calling function is responsible for closing the reader
-func (l *Local) Get(path string) (*os.File, error) {
-	// get the full path for the file
-	fp := l.fullPath(path)
+// // Get the file at the given path and return a Reader
+// // the calling function is responsible for closing the reader
+// func (l *Local) Get(path string) (*os.File, error) {
+// 	// get the full path for the file
+// 	fp := l.fullPath(path)
 
-	// open the file
-	f, err := os.Open(fp)
-	if err != nil {
-		return nil, xerrors.Errorf("Unable to open file: %w", err)
-	}
+// 	// open the file
+// 	f, err := os.Open(fp)
+// 	if err != nil {
+// 		return nil, xerrors.Errorf("Unable to open file: %w", err)
+// 	}
 
-	return f, nil
-}
+// 	return f, nil
+// }
 
 // returns the absolute path
 func (l *Local) fullPath(path string) string {
