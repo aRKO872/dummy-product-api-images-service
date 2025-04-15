@@ -40,12 +40,14 @@ func main() {
 
 	// create the handlers
 	fh := handlers.NewFiles(stor, l)
+	mw := handlers.GZipHandler{}
 
 	ph := sm.Methods(http.MethodPost).Subrouter()
 	ph.HandleFunc("/images/{id:[0-9]+}/{filename}", fh.ServeHTTP)
 
 	gh := sm.Methods(http.MethodGet).Subrouter()
 	gh.Handle("/images/{id:[0-9]+}/{filename}", http.StripPrefix("/images", http.FileServer(http.Dir(basePath))))
+	gh.Use(mw.GzipMiddleware)
 
 	// CORS
 	// We can add multiple referrers which can call this. Just adding one for the time being
